@@ -11,6 +11,7 @@
     "@popperjs/core": "^2.11.8",
     "axios": "^1.6.7",
     "bootstrap": "^5.3.3",
+    "compressorjs": "^1.2.1",
     "core-js": "^3.8.3",
     "v-select2-component": "^0.4.7",
     "vue": "^3.2.13",

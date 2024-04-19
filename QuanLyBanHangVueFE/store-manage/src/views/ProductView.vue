@@ -332,7 +332,7 @@ export default {
             this.currentProduct = {
                 id: 0,
                 productName: "Name",
-                imageProduct: "Image",
+                imageProduct: "",
                 price: 0,
                 barCode: "Bar Code"
             }
@@ -341,7 +341,40 @@ export default {
         onUpdateClick(p) {
             this.currentProduct = Object.assign({}, p);// clone d
             this.productModal.show();
+        },        
+        onFileChange(event) {
+            const file = event.target.files[0];
+            if (file) {
+                // Kiểm tra phần mở rộng của file
+                const validExtensions = ['.png', '.jpg', '.jpeg'];
+                const fileName = file.name;
+                const fileExtension = fileName.substring(fileName.lastIndexOf('.')).toLowerCase();
+
+                if (!validExtensions.includes(fileExtension)) {
+                    alert('Vui lòng chọn một file ảnh có định dạng .png, .jpg hoặc .jpeg!');
+                    return;
+                }
+
+                const formData = new FormData();
+                formData.append('image', file);
+
+                // Gọi API để upload ảnh
+                axios.post(process.env.VUE_APP_BASE_API_URL + '/Products/UploadImage', formData, {
+                    headers: {
+                        'Content-Type': 'multipart/form-data',
+                    },
+                })
+                    .then(response => {
+                        // Lưu URL ảnh trả về từ API vào currentProduct.imageProduct
+                        this.currentProduct.imageProduct = response.data.imageUrl;
+                        console.log(this.currentProduct.imageProduct);
+                    })
+                    .catch(error => {
+                        console.log('Error uploading image:', error);
+                    });
+            }
         },
+
         onSaveClick() {
             if (this.currentProduct.id == 0) {
                 var url = process.env.VUE_APP_BASE_API_URL + `/Products/Create`
@@ -362,6 +395,7 @@ export default {
                 var url = process.env.VUE_APP_BASE_API_URL + `/Products/Update`
                 axios.put(url, this.currentProduct).then((respone) => {
                     console.log(respone.data);
+                    console.log(this.currentProduct);
                     //bat thong bao thanh cong
                     this.success();
 
@@ -374,33 +408,14 @@ export default {
                     console.log(error)
                 })
             }
-        }, 
+        },
         logout() {
             // Xử lý đăng xuất ở đây
             // Ví dụ: xóa token khỏi Local Storage và chuyển hướng đến trang đăng nhập
             localStorage.removeItem('token');
             this.$router.push('/login');
         },
-        onFileChange(event) {
-            const file = event.target.files[0];
-            if (file) {
-                // Kiểm tra phần mở rộng của file
-                const validExtensions = ['.png', '.jpg', '.jpeg'];
-                const fileName = file.name;
-                const fileExtension = fileName.substring(fileName.lastIndexOf('.')).toLowerCase();
 
-                if (!validExtensions.includes(fileExtension)) {
-                    alert('Vui lòng chọn một file ảnh có định dạng .png, .jpg hoặc .jpeg!');
-                    return;
-                }
-
-                const reader = new FileReader();
-                reader.onload = (e) => {
-                    this.currentProduct.imageProduct = e.target.result;
-                };
-                reader.readAsDataURL(file);
-            }
-        },
         onSubmit() {
             var url = process.env.VUE_APP_BASE_API_URL + `/Products/fullFilter`;
             var requestData = {
