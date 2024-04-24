@@ -1,6 +1,6 @@
 import { createRouter, createWebHistory } from 'vue-router'
-import HomeView from './views/HomeView.vue'; 
-import ProductView from './views/ProductView.vue'; 
+import HomeAdmin from './views/admin/HomeAdmin.vue'; 
+import ProductAdmin from './views/admin/ProductAdmin.vue'; 
 import BillView from './views/BillView.vue'; 
 import RegisterView from './views/RegisterView.vue'; 
 import LoginView from './views/LoginView.vue'; 
@@ -8,17 +8,17 @@ import ForgotPasswordView from './views/ForgotPasswordView.vue';
 
 
 const routes = [
-  {
-    path: '/',
-    name: 'HomeView',
-    component: HomeView,
-    meta: { requiresAuth: true } // Thêm meta data để chỉ định rằng trang cần đăng nhập
-  },
-  {
-    path: '/product',
-    name: 'ProductView',
-    component: ProductView
-  },
+  // {
+  //   path: '/',
+  //   name: 'HomeView',
+  //   component: HomeView,
+  //   meta: { requiresAuth: true } // Thêm meta data để chỉ định rằng trang cần đăng nhập
+  // },
+  // {
+  //   path: '/product',
+  //   name: 'ProductView',
+  //   component: ProductView
+  // },
   {
     path: '/bill',
     name: 'BillView',
@@ -38,6 +38,18 @@ const routes = [
     path: '/forgotpassword',
     name: 'ForgotPasswordView',
     component: ForgotPasswordView
+  },
+  {
+    path: '/admin/productadmin',
+    name: 'ProductAdmin',
+    component: ProductAdmin,
+    meta: { requiresAuth: true }
+  },
+  {
+    path: '/admin/',
+    name: 'HomeAdmin',
+    component: HomeAdmin,
+    meta: { requiresAuth: true }
   }
 ]
 

@@ -84,7 +84,7 @@ export default {
                 if (response.status === 200) {
                     console.log('Đăng nhập thành công:', response.data);
                     localStorage.setItem('token', response.data.token);
-                    this.$router.push('/').then(() => {
+                    this.$router.push('/admin').then(() => {
                         window.location.reload();
                     });
                 } else if (response.status === 400) {
